@@ -25,13 +25,23 @@ def load_dataset(path):
     return tracks
 
 
+def clamp(x, a, b):
+    if x < a:
+        return a
+    elif x > b:
+        return b
+    return x
+
+
 def save_output(path, data):
     with alive_bar(len(data), dual_line=True, title="Saving Output...") as bar:
         for s, sample in enumerate(data):
             name = os.path.join(path, f"{s}.raw")
             with open(name, "wb") as f:
                 for i in range(len(sample)):
-                    data = struct.pack("h", round(sample[i]))
+                    y = round(sample[i])
+                    y = clamp(y, -32767, 32767)
+                    data = struct.pack("h", y)
                     f.write(data)
             bar()
         bar.title = "Saving Output... Done!"
