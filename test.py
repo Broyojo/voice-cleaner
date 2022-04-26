@@ -6,7 +6,7 @@ import numpy as np
 def main():
     X = np.array(load_dataset("data/test/"))
 
-    ae = models.load_model("models/sin_waves.h5")
+    ae = models.load_model("models/classical_no_shuffle.h5")
 
     print(X[0:30])
 

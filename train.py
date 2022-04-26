@@ -4,7 +4,7 @@ from dataset import load_dataset
 
 def main():
     ae = AutoEncoder(input_dim=22050, latent_dim=2205,
-                     save_path="models/sin_waves.h5")
+                     save_path="models/classical_no_shuffle.h5")
 
     X = load_dataset("data/train/")
 
