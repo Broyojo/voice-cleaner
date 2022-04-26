@@ -4,15 +4,17 @@ import numpy as np
 
 
 def main():
-    X = np.array(load_dataset("data/test/"))
+    X = np.array(load_dataset("data/test/", 2205))
 
-    ae = models.load_model("models/classical_no_shuffle.h5")
-
-    print(X[0:30])
+    ae = models.load_model("models/classical_50ms.h5")
 
     pred = ae.predict(X)
 
+    print(pred[0:30])
+
     pred *= 32767  # scale up
+
+    print(pred[0:30])
 
     print("prediction shape:", pred[0].shape)
 

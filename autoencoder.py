@@ -11,13 +11,13 @@ class AutoEncoder():
 
         # encoder
         inputs = keras.Input(shape=(input_dim,))
-        x = layers.Dense(input_dim//2, activation="relu")(inputs)
-        x = layers.Dense(latent_dim, activation="relu")(x)
+        #x = layers.Dense(input_dim//2, activation="relu")(inputs)
+        x = layers.Dense(latent_dim, activation="relu")(inputs)
 
         # decoder
         x = layers.Dense(latent_dim, activation="relu")(x)
-        x = layers.Dense(input_dim//2, activation="relu")(x)
-        outputs = layers.Dense(input_dim, activation="sigmoid")(x)
+        #x = layers.Dense(input_dim//2, activation="relu")(x)
+        outputs = layers.Dense(input_dim, activation="tanh")(x)
 
         self.model = keras.Model(
             inputs=inputs, outputs=outputs, name="autoencoder")
@@ -27,7 +27,7 @@ class AutoEncoder():
             optimizer='adam', loss=keras.losses.MeanSquaredError(), metrics=["accuracy"])
 
     def train(self, X, y):
-        self.model.fit(np.array(X), np.array(y), shuffle=True, batch_size=64,
+        self.model.fit(np.array(X), np.array(y), shuffle=True, batch_size=128,
                        epochs=10, validation_split=0.2)
 
         self.model.save(self.save_path)

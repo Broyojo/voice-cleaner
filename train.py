@@ -3,10 +3,12 @@ from dataset import load_dataset
 
 
 def main():
-    ae = AutoEncoder(input_dim=22050, latent_dim=2205,
-                     save_path="models/classical_no_shuffle.h5")
+    n_samples = 2205
 
-    X = load_dataset("data/train/")
+    ae = AutoEncoder(input_dim=n_samples, latent_dim=n_samples //
+                     5, save_path="models/classical_50ms.h5")
+
+    X = load_dataset("data/train/", n_samples)
 
     ae.train(X, X)
 

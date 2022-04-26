@@ -4,7 +4,7 @@ from pathlib import Path
 import struct
 
 
-def load_dataset(path):
+def load_dataset(path, n_samples):
     tracks = []
     with alive_bar(len(os.listdir(path)), dual_line=True, title="Loading Dataset...") as bar:
         for file in os.listdir(path):
@@ -18,7 +18,9 @@ def load_dataset(path):
                     sample = struct.unpack("h", data[i:i+2])
                     # normalize audio between 0 and 1
                     samples.append(sample[0] / 32767)
-                if len(samples) == 22050:  # pad with zeros in the future
+                # pad with zeros in the future
+                # and any([round(s * 32767) != 0 for s in samples]):
+                if len(samples) == n_samples:
                     tracks.append(samples)
             bar()
         bar.title = "Loading Dataset... Done!"
