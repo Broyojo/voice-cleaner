@@ -2,12 +2,18 @@ from alive_progress import alive_bar
 import os
 from pathlib import Path
 import struct
+import re
 
+#alphanumeric sorted data
+def sorted_alphanumeric(data):
+    convert = lambda text: int(text) if text.isdigit() else text.lower()
+    alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ] 
+    return sorted(data, key=alphanum_key)
 
 def load_dataset(path, n_samples):
     tracks = []
     with alive_bar(len(os.listdir(path)), dual_line=True, title="Loading Dataset...") as bar:
-        for file in os.listdir(path):
+        for file in sorted_alphanumeric(os.listdir(path)):
             if file.endswith(".raw"):
                 name = os.path.join(path, file)
                 bar.text = f"Loading {name}..."
