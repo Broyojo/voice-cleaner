@@ -4,16 +4,22 @@ from pathlib import Path
 import struct
 import re
 
-#alphanumeric sorted data
+# alphanumeric sorted data
+
+
 def sorted_alphanumeric(data):
-    convert = lambda text: int(text) if text.isdigit() else text.lower()
-    alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ] 
+    def convert(text): return int(text) if text.isdigit() else text.lower()
+    def alphanum_key(key): return [convert(c)
+                                   for c in re.split('([0-9]+)', key)]
     return sorted(data, key=alphanum_key)
 
-def load_dataset(path, n_samples):
+
+def load_dataset(path, n_samples, max_files=0):
     tracks = []
-    with alive_bar(len(os.listdir(path)), dual_line=True, title="Loading Dataset...") as bar:
-        for file in sorted_alphanumeric(os.listdir(path)):
+    ls = [s for i, s in enumerate(os.listdir(
+        path)) if i < max_files or max_files == 0]
+    with alive_bar(len(ls), dual_line=True, title="Loading Dataset...") as bar:
+        for file in sorted_alphanumeric(ls):
             if file.endswith(".raw"):
                 name = os.path.join(path, file)
                 bar.text = f"Loading {name}..."

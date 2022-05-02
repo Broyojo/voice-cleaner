@@ -28,6 +28,6 @@ class AutoEncoder():
 
     def train(self, X, y):
         self.model.fit(np.array(X), np.array(y), shuffle=True, batch_size=128,
-                       epochs=10, validation_split=0.2)
+                       epochs=15, validation_split=0.2)
 
         self.model.save(self.save_path)

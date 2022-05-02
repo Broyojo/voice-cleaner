@@ -6,9 +6,9 @@ def main():
     n_samples = 2205
 
     ae = AutoEncoder(input_dim=n_samples, latent_dim=n_samples //
-                     5, save_path="models/classical_50ms.h5")
+                     30, save_path="models/minecraft.h5")
 
-    X = load_dataset("data/train/", n_samples)
+    X = load_dataset("data/train/", n_samples, max_files=100_000)
 
     ae.train(X, X)
 
