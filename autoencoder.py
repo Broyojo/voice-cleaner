@@ -12,7 +12,8 @@ class AutoEncoder():
         # encoder
         inputs = keras.Input(shape=(input_dim,))
         #x = layers.Dense(input_dim//2, activation="relu")(inputs)
-        x = layers.Dense(latent_dim, activation="relu")(inputs)
+        x = layers.Dense(input_dim, activation="relu")(inputs)
+        x = layers.Dense(latent_dim, activation="relu")(x)
 
         # decoder
         x = layers.Dense(latent_dim, activation="relu")(x)
