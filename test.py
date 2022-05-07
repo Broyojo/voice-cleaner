@@ -6,7 +6,7 @@ import numpy as np
 def main():
     X = np.array(load_dataset("data/test/", 2205))
 
-    ae = models.load_model("models/minecraft_conv_49x_better.h5")
+    ae = models.load_model("models/minecraft_conv_49x_big_kernel.h5")
 
     pred = ae.predict(X)
 

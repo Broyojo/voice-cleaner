@@ -14,34 +14,20 @@ class ConvolutionalAutoEncoder:
             shape=(input_dim, 1), name="original_image")
 
         x = layers.Conv1D(
-            filters=64,
-            kernel_size=21,
+            filters=32,
+            kernel_size=35,
             strides=1,
             activation=activations.elu,
             padding='same',
         )(encoder_input)
 
-        x = layers.BatchNormalization()(x)
-
-        x = layers.Conv1D(
-            filters=32,
-            kernel_size=21,
-            strides=1,
-            activation=activations.elu,
-            padding='same',
-        )(x)
-
-        x = layers.BatchNormalization()(x)
-
         x = layers.Conv1D(
             filters=16,
-            kernel_size=21,
+            kernel_size=35,
             strides=1,
             activation=activations.elu,
             padding='same',
         )(x)
-
-        x = layers.BatchNormalization()(x)
 
         encoder_output = layers.MaxPooling1D(pool_size=compression_size)(x)
 
@@ -57,41 +43,25 @@ class ConvolutionalAutoEncoder:
 
         x = layers.UpSampling1D(size=compression_size)(decoder_input)
 
-        x = layers.BatchNormalization()(x)
-
         x = layers.Conv1DTranspose(
             filters=16,
-            kernel_size=21,
+            kernel_size=35,
             strides=1,
             activation=activations.elu,
             padding='same',
         )(x)
-
-        x = layers.BatchNormalization()(x)
 
         x = layers.Conv1D(
             filters=32,
-            kernel_size=21,
+            kernel_size=35,
             strides=1,
             activation=activations.elu,
             padding='same',
         )(x)
-
-        x = layers.BatchNormalization()(x)
-
-        x = layers.Conv1D(
-            filters=64,
-            kernel_size=21,
-            strides=1,
-            activation=activations.elu,
-            padding='same',
-        )(x)
-
-        x = layers.BatchNormalization()(x)
 
         decoder_output = layers.Conv1DTranspose(
             filters=1,
-            kernel_size=21,
+            kernel_size=35,
             strides=1,
             activation=activations.tanh,
             padding='same',

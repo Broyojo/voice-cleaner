@@ -9,7 +9,7 @@ def main():
     #                        save_path="models/minecraft_nocompression.h5")
 
     ae = ConvolutionalAutoEncoder(
-        input_dim=n_samples, compression_size=49, save_path="models/minecraft_conv_49x_better.h5")
+        input_dim=n_samples, compression_size=49, save_path="models/minecraft_conv_49x_big_kernel.h5")
 
     X = load_dataset("data/train/", n_samples, max_files=100_000)
 
