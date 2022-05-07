@@ -3,15 +3,15 @@ from dataset import load_dataset
 
 
 def main():
-    n_samples = 2205
+    n_samples = 1600
 
     # ae = LinearAutoEncoder(input_dim=n_samples, latent_dim=n_samples,
     #                        save_path="models/minecraft_nocompression.h5")
 
     ae = ConvolutionalAutoEncoder(
-        input_dim=n_samples, compression_size=49, save_path="models/minecraft_conv_49x_big_kernel.h5")
+        input_dim=n_samples, compression_size=32, save_path="models/minecraft_conv_49x_big_kernel.h5")
 
-    X = load_dataset("data/train/", n_samples, max_files=100_000)
+    X = load_dataset("data/train/", n_samples, max_files=68_000)
 
     ae.train(X, X)
 

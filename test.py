@@ -4,9 +4,15 @@ import numpy as np
 
 
 def main():
-    X = np.array(load_dataset("data/test/", 2205))
 
-    ae = models.load_model("models/minecraft_conv_49x_big_kernel.h5")
+#this is actually unused. tf just gets angry when I do not define cfft_loss
+    def cfft_loss(y_actual,y_pred):
+        custom_loss=keras.metrics.mean_squared_error(keras.layers.Lambda(signal.rfft)(y_actual), keras.layers.Lambda(signal.rfft)(y_pred)) 
+        return custom_loss
+
+    X = np.array(load_dataset("data/test/", 1600))
+
+    ae = models.load_model("models/minecraft_conv_49x_big_kernel.h5", custom_objects={'cfft_loss': cfft_loss})
 
     pred = ae.predict(X)
 

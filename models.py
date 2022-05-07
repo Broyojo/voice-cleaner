@@ -1,33 +1,44 @@
 import numpy as np
 from tensorflow import keras
+from tensorflow import signal
+import tensorflow.keras.backend as kb
 from keras import activations
 from keras import layers
-
+#import dpam
 
 class ConvolutionalAutoEncoder:
     def __init__(self, input_dim, compression_size, save_path):
         self.save_path = save_path
+        def cfft_loss(y_actual,y_pred):
+            custom_loss=keras.metrics.mean_squared_error(keras.layers.Lambda(signal.rfft)(y_actual), keras.layers.Lambda(signal.rfft)(y_pred)) 
+            return custom_loss
 
+        def dpam_loss(y_actual,y_pred):
+            loss_fn = dpam.DPAM()
+            dist = loss_fn.forward(y_actual,y_pred)
+            return custom_loss
         # Encoder
 
         encoder_input = keras.Input(
             shape=(input_dim, 1), name="original_image")
 
         x = layers.Conv1D(
-            filters=32,
-            kernel_size=35,
-            strides=1,
-            activation=activations.elu,
-            padding='same',
-        )(encoder_input)
-
-        x = layers.Conv1D(
             filters=16,
             kernel_size=35,
             strides=1,
             activation=activations.elu,
-            padding='same',
+            padding='causal',
+        )(encoder_input)
+
+
+        x = layers.Conv1D(
+            filters=32,
+            kernel_size=35,
+            strides=1,
+            activation=activations.elu,
+            padding='causal',
         )(x)
+
 
         encoder_output = layers.MaxPooling1D(pool_size=compression_size)(x)
 
@@ -39,12 +50,12 @@ class ConvolutionalAutoEncoder:
         # Decoder
 
         decoder_input = keras.Input(
-            shape=(input_dim//compression_size, 16), name="encoded_image")
+            shape=(input_dim//compression_size, 32), name="encoded_image")
 
         x = layers.UpSampling1D(size=compression_size)(decoder_input)
 
         x = layers.Conv1DTranspose(
-            filters=16,
+            filters=32,
             kernel_size=35,
             strides=1,
             activation=activations.elu,
@@ -52,11 +63,11 @@ class ConvolutionalAutoEncoder:
         )(x)
 
         x = layers.Conv1D(
-            filters=32,
+            filters=16,
             kernel_size=35,
             strides=1,
             activation=activations.elu,
-            padding='same',
+            padding='causal',
         )(x)
 
         decoder_output = layers.Conv1DTranspose(
@@ -81,11 +92,11 @@ class ConvolutionalAutoEncoder:
         self.autoencoder.summary()
 
         self.autoencoder.compile(
-            optimizer='adam', loss=keras.losses.MeanSquaredError(), metrics=["accuracy"])
+            optimizer=keras.optimizers.Adam(epsilon=1e-06), loss=cfft_loss, metrics=["accuracy"]) #Adjust loss
 
     def train(self, X, y):
         self.autoencoder.fit(np.array(X), np.array(y), shuffle=True,
-                             batch_size=128, epochs=15, validation_split=0.2)
+                             batch_size=128, epochs=7, validation_split=0.2)
 
         self.autoencoder.save(self.save_path)
 
