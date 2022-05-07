@@ -1,12 +1,15 @@
-from autoencoder import AutoEncoder
+from models import LinearAutoEncoder, ConvolutionalAutoEncoder
 from dataset import load_dataset
 
 
 def main():
     n_samples = 2205
 
-    ae = AutoEncoder(input_dim=n_samples, latent_dim=n_samples,
-                     save_path="models/minecraft_nocompression.h5")
+    # ae = LinearAutoEncoder(input_dim=n_samples, latent_dim=n_samples,
+    #                        save_path="models/minecraft_nocompression.h5")
+
+    ae = ConvolutionalAutoEncoder(
+        input_dim=n_samples, compression_size=49, save_path="models/minecraft_conv_49x_better.h5")
 
     X = load_dataset("data/train/", n_samples, max_files=100_000)
 

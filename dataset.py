@@ -31,7 +31,6 @@ def load_dataset(path, n_samples, max_files=0):
                     # normalize audio between 0 and 1
                     samples.append(sample[0] / 32767)
                 # pad with zeros in the future
-                # and any([round(s * 32767) != 0 for s in samples]):
                 if len(samples) == n_samples:
                     tracks.append(samples)
             bar()
@@ -50,10 +49,11 @@ def clamp(x, a, b):
 def save_output(path, data):
     with alive_bar(len(data), dual_line=True, title="Saving Output...") as bar:
         for s, sample in enumerate(data):
+            #sample = sample[0]
             name = os.path.join(path, f"{s}.raw")
             with open(name, "wb") as f:
                 for i in range(len(sample)):
-                    y = round(sample[i])
+                    y = round(sample[i][0])
                     y = clamp(y, -32767, 32767)
                     data = struct.pack("h", y)
                     f.write(data)

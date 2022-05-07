@@ -6,9 +6,12 @@ import numpy as np
 def main():
     X = np.array(load_dataset("data/test/", 2205))
 
-    ae = models.load_model("models/minecraft_nocompression.h5")
+    ae = models.load_model("models/minecraft_conv_49x_better.h5")
 
     pred = ae.predict(X)
+
+    print(pred.shape)
+    print(pred[0].shape)
 
     print(pred[0:30])
 
