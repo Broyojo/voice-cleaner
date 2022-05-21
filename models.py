@@ -6,16 +6,19 @@ from keras import activations
 from keras import layers
 #import dpam
 
+
 class ConvolutionalAutoEncoder:
     def __init__(self, input_dim, compression_size, save_path):
         self.save_path = save_path
-        def cfft_loss(y_actual,y_pred):
-            custom_loss=keras.metrics.mean_squared_error(keras.layers.Lambda(signal.rfft)(y_actual), keras.layers.Lambda(signal.rfft)(y_pred)) 
+
+        def cfft_loss(y_actual, y_pred):
+            custom_loss = keras.metrics.mean_squared_error(keras.layers.Lambda(
+                signal.rfft)(y_actual), keras.layers.Lambda(signal.rfft)(y_pred))
             return custom_loss
 
-        def dpam_loss(y_actual,y_pred):
+        def dpam_loss(y_actual, y_pred):
             loss_fn = dpam.DPAM()
-            dist = loss_fn.forward(y_actual,y_pred)
+            dist = loss_fn.forward(y_actual, y_pred)
             return custom_loss
         # Encoder
 
@@ -30,7 +33,6 @@ class ConvolutionalAutoEncoder:
             padding='causal',
         )(encoder_input)
 
-
         x = layers.Conv1D(
             filters=32,
             kernel_size=35,
@@ -38,7 +40,6 @@ class ConvolutionalAutoEncoder:
             activation=activations.elu,
             padding='causal',
         )(x)
-
 
         encoder_output = layers.MaxPooling1D(pool_size=compression_size)(x)
 
@@ -92,7 +93,7 @@ class ConvolutionalAutoEncoder:
         self.autoencoder.summary()
 
         self.autoencoder.compile(
-            optimizer=keras.optimizers.Adam(epsilon=1e-06), loss=cfft_loss, metrics=["accuracy"]) #Adjust loss
+            optimizer=keras.optimizers.Adam(epsilon=1e-06), loss="mse", metrics=["accuracy"])  # Adjust loss
 
     def train(self, X, y):
         self.autoencoder.fit(np.array(X), np.array(y), shuffle=True,

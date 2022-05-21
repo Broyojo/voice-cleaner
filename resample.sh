@@ -2,7 +2,7 @@
 set -e
 #make sure you have installed libsox-fmt-all and sox
 time="0.05"
-br="8000"
+br="32000"
 test="0"
 while getopts "sb:t:" OPTION
 do
@@ -48,7 +48,7 @@ echo $FILEPATHo
 
 if [ $test == "0" ] #notest
 then
-     for i in $FILEPATHi*$extention ; do ffmpeg -i "$i" -acodec pcm_s32le -f sox -ac 1 -ar $br pipe: | sox -p -r 8000 -e signed-integer -b 16 -c 1 -t raw - | split -b 800 -d --additional-suffix=.raw -a 10 - $FILEPATHo"${i%.*}" ; done 
+     for i in $FILEPATHi*$extention ; do ffmpeg -i "$i" -acodec pcm_s32le -f sox -ac 1 -ar $br pipe: | sox -p -r 32000 -e signed-integer -b 16 -c 1 -t raw - | split -b 3200 -d --additional-suffix=.raw -a 10 - $FILEPATHo"${i%.*}" ; done 
 fi
 
 if [ $test == "1" ] #test
