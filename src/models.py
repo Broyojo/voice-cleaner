@@ -92,7 +92,7 @@ class ConvolutionalAutoEncoder:
         self.autoencoder.summary()
 
         self.autoencoder.compile(
-            optimizer=keras.optimizers.Adam(epsilon=1e-06), loss=cfft_loss, metrics=["accuracy"])  # Adjust loss
+            optimizer=keras.optimizers.Adam(epsilon=1e-06), loss="mse", metrics=["accuracy"])  # Adjust loss
 
     def train(self, X, y):
         self.autoencoder.fit(np.array(X), np.array(y), shuffle=True,
