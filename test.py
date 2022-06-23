@@ -10,21 +10,20 @@ def main():
             signal.rfft)(y_actual), keras.layers.Lambda(signal.rfft)(y_pred))
         return custom_loss
 
-    X = np.array(load_dataset("data/test/", 1600))
+    X = np.array(load_dataset("data/test/chinese", 2205))
 
     ae = models.load_model("models/minecraft_conv_49x_big_kernel.h5",
                            custom_objects={'cfft_loss': cfft_loss})
 
     pred = ae.predict(X)
 
-    print(pred.shape)
-    print(pred[0].shape)
-
-    print(pred[0:30])
+    # print(pred.shape)
+    # print(pred[0].shape)
+    # print(pred[0:30])
 
     pred *= 32767  # scale up
 
-    print(pred[0:30])
+    # print(pred[0:30])
 
     print("prediction shape:", pred[0].shape)
 

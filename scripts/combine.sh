@@ -1,1 +1,0 @@
-find . -maxdepth 1 -type f  -name '*.raw' -print0 | sort -Vz | xargs -0r cat | sox -t raw -r 44100 -b 16 -c 1 -L -e signed-integer - output.wav
