@@ -3,22 +3,14 @@ from tensorflow import keras
 from tensorflow import signal
 from keras import activations
 from keras import layers
-#import dpam
+from keras import models
+# import dpam
 
 
 class ConvolutionalAutoEncoder:
     def __init__(self, input_dim, compression_size, save_path):
         self.save_path = save_path
 
-        def cfft_loss(y_actual, y_pred):
-            custom_loss = keras.metrics.mean_squared_error(keras.layers.Lambda(
-                signal.rfft)(y_actual), keras.layers.Lambda(signal.rfft)(y_pred))
-            return custom_loss
-
-        def dpam_loss(y_actual, y_pred):
-            loss_fn = dpam.DPAM()
-            dist = loss_fn.forward(y_actual, y_pred)
-            return custom_loss
         # Encoder
 
         encoder_input = keras.Input(

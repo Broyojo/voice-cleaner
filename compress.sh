@@ -2,8 +2,8 @@
 set -e
 #make sure you have installed libsox-fmt-all and sox and ffmpeg
 useffmpeg="0"
-time="1"
-noiselvl="0.02"
+time="0.05"
+noiselvl="0"
 codecin="1"
 codecrandom="0"
 br="13000"
