@@ -1,6 +1,7 @@
-from dataset import load_dataset, save_output
-from keras import models
 import numpy as np
+from keras import models
+
+from dataset import load_dataset, save_output
 
 
 def main():

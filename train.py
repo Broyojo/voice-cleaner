@@ -1,5 +1,5 @@
-from models import LinearAutoEncoder, ConvolutionalAutoEncoder
 from dataset import load_dataset
+from models import ConvolutionalAutoEncoder, LinearAutoEncoder
 
 
 def main():
@@ -9,7 +9,10 @@ def main():
     #                        save_path="models/minecraft_nocompression.h5")
 
     ae = ConvolutionalAutoEncoder(
-        input_dim=n_samples, compression_size=15, save_path="models/minecraft_denoise.h5")
+        input_dim=n_samples,
+        compression_size=15,
+        save_path="models/minecraft_denoise.h5",
+    )
 
     max_files = 50_000
 
